@@ -1,0 +1,32 @@
+{
+  "name": "2b-bot-2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "discord.js-lavalink": "^2.2.3",
+    "fs-extra": "^8.1.0",
+    "js-yaml": "^3.13.1",
+    "pg": "^7.14.0",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^5.21.2",
+    "sequelize-typescript": "^1.0.0",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.3.1"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^3.5.29",
+    "@types/fs-extra": "^8.0.1",
+    "@types/js-yaml": "^3.12.1",
+    "@types/node": "^12.12.14",
+    "@types/sequelize": "^4.28.8",
+    "@types/validator": "^12.0.1",
+    "delete": "^1.1.0",
+    "eslint": "^6.7.2",
+    "gulp": "^4.0.2",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.3"
+  }
+}

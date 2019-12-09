@@ -1,0 +1,6 @@
+logs
+node_modules
+.idea
+dist
+config.yaml
+yarn-error.log
