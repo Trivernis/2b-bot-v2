@@ -12,6 +12,11 @@ export abstract class Command {
     public static commandName: string;
 
     /**
+     * The description of the command
+     */
+    public static description: string;
+
+    /**
      * The time to live in seconds before the instance is deleted.
      */
     public readonly ttl: number = 30;
@@ -31,17 +36,17 @@ export abstract class Command {
         this.createdAt = Date.now();
     }
 
-    public invoke?(msg: Message): Promise<void>;
+    public invoke?(msg: Message): Promise<void>|void;
 
     /**
      * A function that is executed when the answer to the command was sent.
      */
-    public onSent?(answer: Message): Promise<void>;
+    public onSent?(answer: Message): Promise<void>|void;
 
     /**
      * A function that is executed when a reaction is added to the command answer
      */
-    public onReaction?(reaction: MessageReaction): Promise<void>;
+    public onReaction?(reaction: MessageReaction): Promise<void>|void;
 
     /**
      * returns the name of the command to make it accessible.

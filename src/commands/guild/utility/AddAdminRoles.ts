@@ -12,12 +12,15 @@ export class AddAdminRoles extends GuildCommand {
      */
     public async invoke(msg: Message) {
         const args = AddAdminRoles.getArgs(msg.content);
-        this.bot.logger.debug(args[0]);
         if (args.length < 2) {
             msg.channel.send("No argument for role names provided.");
         } else {
             const roles = args.splice(1);
-            this.guildHandler.settings.adminRoles.push(...roles);
+            for (const role of roles) {
+                if (this.guildHandler.settings.adminRoles.includes(role)) {
+                    this.guildHandler.settings.adminRoles.push(role);
+                }
+            }
             msg.channel.send(`Added **${roles.join("**, **")}** to the admin roles.`);
         }
     }

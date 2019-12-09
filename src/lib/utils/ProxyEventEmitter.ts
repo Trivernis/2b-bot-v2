@@ -1,6 +1,8 @@
 import {EventEmitter} from "events";
-import {type} from "os";
 
+/**
+ * An event emitter that can be used to listen to events regarding object properties.
+ */
 export class ProxyEventEmitter extends EventEmitter implements ProxyHandler<any> {
 
     /**

@@ -1,1 +1,3 @@
-2b-bot-2
+# 2B Bot 2
+
+A typescript rewrite of my discordbot 2b.

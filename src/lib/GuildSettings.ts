@@ -1,4 +1,14 @@
+import {Config} from "./utils/Config";
+
 export class GuildSettings {
+
+    /**
+     * Constructor with config that assigns some config specific stuff.
+     * @param config
+     */
+    constructor(config: Config) {
+        this.prefix = config.prefix;
+    }
 
     /**
      * The prefix of the bot.

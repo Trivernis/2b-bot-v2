@@ -7,11 +7,6 @@ export abstract class Config {
     public presenceDuration: number = 300000;
 
     /**
-     * The maximum number of commands in a sequence.
-     */
-    public maxCommandSequenceLength: number = 10;
-
-    /**
      * The number of commands that are allowed in a minute by one user.
      */
     public rateLimitMessageCount: number = 30;
@@ -38,4 +33,9 @@ export abstract class Config {
      * The owners of the bot that have elevated privileges
      */
     public owners: string[];
+
+    /**
+     * The prefix of the bot.
+     */
+    public prefix: string;
 }

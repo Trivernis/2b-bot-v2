@@ -9,13 +9,14 @@ import {globalCommands} from "../commands/global";
 import {Command} from "./Command";
 import {BotLogger} from "./utils/BotLogger";
 import {ProxyEventEmitter} from "./utils/ProxyEventEmitter";
+import {parseMessage} from "./utils";
 
 /**
  * Handles all guild related tasks.
  */
 export class GuildHandler {
     private guild: Guild;
-    private bot: Bot;
+    private readonly bot: Bot;
     private guildData: GuildData;
     private guildSettings: GuildSettings;
     private guildSettingsProxy: ProxyEventEmitter;
@@ -61,26 +62,14 @@ export class GuildHandler {
      * @param message
      */
     public async onMessage(message: Message): Promise<void> {
-        const commandPattern = new RegExp( `\\s*${this.guildSettings.prefix}(\\w+)`);
-
-        this.logger.debug(`Command Pattern is: ${commandPattern}`);
         this.logger.debug(`<${this.guild.name}:${message.author.tag}>"${message.content}"`);
 
-        if (commandPattern.test(message.content)) {
-            this.logger.debug("Message matches command syntax.");
-            const commandString = commandPattern.exec(message.content)[1];
-            const CommandClass = this.commandCollection.findByName(commandString);
+        const CommandClass = parseMessage(message, this.commandCollection,
+            this.settings.prefix, this.getMembersHighestRole(message.member));
 
-            if (CommandClass) {
-                this.logger.debug(`${commandString} -> ${CommandClass.name}`);
-                this.logger.debug(`Member Permission: ${this.getMembersHighestRole(message.member)}, command permission: ${CommandClass.permission}`);
-                if (CommandClass.permission <= this.getMembersHighestRole(message.member)) {
-                    const command = new CommandClass(this.bot, this);
-                    await command.invoke(message);
-                } else {
-                    message.channel.send("You don't have permission for that command.");
-                }
-            }
+        if (CommandClass) {
+            const command = new CommandClass(this.bot, this);
+            await command.invoke(message);
         }
     }
 
@@ -99,9 +88,9 @@ export class GuildHandler {
     private getMembersHighestRole(guildMember: GuildMember) {
         const adminRoles = this.guildSettings.adminRoles;
         const djRoles = this.guildSettings.djRoles;
-        if (adminRoles.find((role) => GuildHandler.memberHasRole(guildMember, role)).length > 0) {
+        if (adminRoles.find((role) => GuildHandler.memberHasRole(guildMember, role))) {
             return CommandPermission.ADMIN;
-        } else if (djRoles.find((role) => GuildHandler.memberHasRole(guildMember, role)).length > 0) {
+        } else if (djRoles.find((role) => GuildHandler.memberHasRole(guildMember, role))) {
             return CommandPermission.DJ;
         } else {
             return CommandPermission.REGULAR;
@@ -114,6 +103,6 @@ export class GuildHandler {
      * @param roleName
      */
     private static memberHasRole(guildMember: GuildMember, roleName: string) {
-        return guildMember.roles.filter((role, key) => role.name === roleName).size > 0;
+        return guildMember.roles.filter((role) => role.name === roleName).size > 0;
     }
 }
