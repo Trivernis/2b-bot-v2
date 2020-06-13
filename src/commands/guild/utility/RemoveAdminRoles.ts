@@ -1,11 +1,14 @@
 import {CommandPermission} from "../../../lib/CommandPermission";
 import {GuildCommand} from "../../../lib/GuildCommand";
 import {Message} from "discord.js";
+import {CommandCategory} from "../../CommandCategory";
 
 export class RemoveAdminRoles extends GuildCommand {
     public static commandName = "removeAdminRoles";
     public static description = "Removes one or more roles from the configured roles";
+    public static usage = "removeAdminRoles <roleName>...";
     public static permission = CommandPermission.ADMIN;
+    public static category = CommandCategory.UTILITY;
 
     /**
      * Removes all specified roles from the admin roles.

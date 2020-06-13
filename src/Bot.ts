@@ -13,6 +13,8 @@ import {globalCommands} from "./commands/global";
 import {privateCommands} from "./commands/private";
 import {parseMessage} from "./lib/utils";
 import {CommandPermission} from "./lib/CommandPermission";
+import {Help} from "./commands/global/utility/Help";
+import {ExtendedMessage} from "./lib/ExtendedMessage";
 
 const configFile = "config.yaml";
 
@@ -31,6 +33,7 @@ export class Bot {
      * constructor
      */
     constructor() {
+        globalCommands.add(Help);
         this.config = Bot.loadConfig();
         this.logger = new BotLogger(this.config.logging.directory, this.config.logging.level);
         this.client = new Client();
@@ -87,7 +90,11 @@ export class Bot {
                         this.config.prefix, userPermission);
                     if (CommandClass) {
                         const command = new CommandClass(this);
-                        command.invoke(message);
+                        try {
+                            await command.invoke(message, new ExtendedMessage(message));
+                        } catch (err) {
+                            this.logger.errorReport(err);
+                        }
                     }
                 }
             }

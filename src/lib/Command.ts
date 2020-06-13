@@ -1,6 +1,9 @@
 import {Message, MessageReaction} from "discord.js";
 import {CommandPermission} from "./CommandPermission";
 import {Bot} from "../Bot";
+import {basename} from "path";
+import {CommandCategory} from "../commands/CommandCategory";
+import {ExtendedMessage} from "./ExtendedMessage";
 
 export abstract class Command {
 
@@ -17,6 +20,11 @@ export abstract class Command {
     public static description: string;
 
     /**
+     * The category of the command
+     */
+    public static category: CommandCategory;
+
+    /**
      * The time to live in seconds before the instance is deleted.
      */
     public readonly ttl: number = 30;
@@ -29,14 +37,14 @@ export abstract class Command {
     /**
      * The permission required to run this command
      */
-    public static permission: CommandPermission;
+    public static permission: CommandPermission = CommandPermission.REGULAR;
 
     protected constructor(bot: Bot) {
         this.bot = bot;
         this.createdAt = Date.now();
     }
 
-    public invoke?(msg: Message): Promise<void>|void;
+    public invoke?(msg: Message, exMsg: ExtendedMessage): Promise<void>|void;
 
     /**
      * A function that is executed when the answer to the command was sent.

@@ -1,7 +1,6 @@
 const {src, dest, watch, series, task} = require('gulp');
 const ts = require('gulp-typescript');
 const del = require('delete');
-const gulp = require('gulp');
 
 function clearDist(cb) {
     del('dist/*', cb);

@@ -1,10 +1,14 @@
 import {Message} from "discord.js";
 import {GuildCommand} from "../../../lib/GuildCommand";
 import {CommandPermission} from "../../../lib/CommandPermission";
+import {CommandCategory} from "../../CommandCategory";
 
 export class AddAdminRoles extends GuildCommand {
     public static commandName = "addAdminRoles";
+    public static description = "Adds roles to the recognized admin roles for command permissions.";
+    public static usage = "addAdminRoles <roleName>...";
     public static permission = CommandPermission.ADMIN;
+    public static category = CommandCategory.UTILITY;
 
     /**
      * Adds an admin role to the admin role setting on the server

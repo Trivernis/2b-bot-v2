@@ -6,10 +6,11 @@ import {CommandPermission} from "./CommandPermission";
 import {CommandCollection} from "./CommandCollection";
 import {guildCommands} from "../commands/guild";
 import {globalCommands} from "../commands/global";
-import {Command} from "./Command";
 import {BotLogger} from "./utils/BotLogger";
 import {ProxyEventEmitter} from "./utils/ProxyEventEmitter";
 import {parseMessage} from "./utils";
+import {ExtendedMessage} from "./ExtendedMessage";
+import { Help } from "../commands/global/utility/Help";
 
 /**
  * Handles all guild related tasks.
@@ -69,7 +70,11 @@ export class GuildHandler {
 
         if (CommandClass) {
             const command = new CommandClass(this.bot, this);
-            await command.invoke(message);
+            try {
+                await command.invoke(message, new ExtendedMessage(message));
+            } catch (err) {
+                this.logger.errorReport(err);
+            }
         }
     }
 
@@ -88,7 +93,10 @@ export class GuildHandler {
     private getMembersHighestRole(guildMember: GuildMember) {
         const adminRoles = this.guildSettings.adminRoles;
         const djRoles = this.guildSettings.djRoles;
-        if (adminRoles.find((role) => GuildHandler.memberHasRole(guildMember, role))) {
+
+        if (this.bot.config.owners.includes(guildMember.user.tag)) {
+            return CommandPermission.OWNER;
+        } else if (adminRoles.find((role) => GuildHandler.memberHasRole(guildMember, role))) {
             return CommandPermission.ADMIN;
         } else if (djRoles.find((role) => GuildHandler.memberHasRole(guildMember, role))) {
             return CommandPermission.DJ;

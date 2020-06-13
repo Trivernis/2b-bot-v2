@@ -1,10 +1,14 @@
 import {GuildCommand} from "../../../lib/GuildCommand";
 import {CommandPermission} from "../../../lib/CommandPermission";
 import {Message} from "discord.js";
+import {CommandCategory} from "../../CommandCategory";
 
 export class SetPrefix extends GuildCommand {
     public static commandName = "setPrefix";
     public static permission = CommandPermission.ADMIN;
+    public static category = CommandCategory.UTILITY;
+    public static description = "Sets the command prefix for the guild.";
+    public static usage = "setPrefix <prefix>";
 
     /**
      * Sets the prefix for a guild.
